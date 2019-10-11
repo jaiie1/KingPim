@@ -1,0 +1,109 @@
+﻿@model SubCategoryViewModel
+<!-- This is the createModal to create a subcategory: -->
+<div class="modal fade" id="createModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title mx-auto text-center" id="createModalLabel"><strong>CREATE</strong></h5>
+            </div>
+            <form asp-controller="SubCategory" asp-action="Add" method="post" id="addSubCatForm">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="Name" hidden></label>
+                        <input type="text" name="Name" placeholder="Name..." class="form-control form-control-sm" />
+                    </div>
+                    <div class="form-group">
+                        <select name="CategoryId" class="form-control" required id="catSelect">
+                            <option value="" disabled selected>Select a category</option>
+                            @foreach (var cat in Model.Categories)
+                            {
+                                <option value="@cat.Id">@cat.Name</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <select name="AttributeGroupId" class="form-control" required multiple id="attGrSelect">
+                            <option value="" disabled selected>Select an OneAttribute group</option>
+                            @foreach (var attr in Model.AttributeGroups)
+                            {
+                                <option value="@attr.Id">@attr.Name</option>
+                            }
+                        </select>
+                        <br />
+                    </div>
+                    <p class="text-center"><strong>Make sure to save your changes.</strong></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+                    <input type="hidden" name="categoryId" value="@Model.Id" />
+                    <input type="hidden" asp-for="@Model.ModifiedByUser" value="@User.Identity.Name" />
+                    <button type="submit" id="createSomethingBtn" class="btn btn-success">Create</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- This is the updateModal to update a subcategory: -->
+<div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="updateModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title mx-auto text-center" id="updateModalLabel"><strong>UPDATE</strong></h5>
+            </div>
+            <form asp-controller="SubCategory" asp-action="Update" method="post">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <p class="text-center">
+                            <label asp-for="@Model.Name"><strong></strong></label>
+                            <input asp-for="@Model.Name" placeholder="Name..." class="form-control form-control-sm" />
+                        </p>
+                    </div>
+                    <div class="form-group">
+                        <select asp-for="CategoryId" class="form-control" required>
+                            <option value="" disabled selected>Select a category</option>
+                            @foreach (var cat in Model.Categories)
+                            {
+                                <option value="@cat.Id">@cat.Name</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <select asp-for="AttributeGroupId" class="form-control" required>
+                            <option value="" disabled selected>Select an OneAttribute group</option>
+                            @foreach (var attr in Model.AttributeGroups)
+                            {
+                                <option value="@attr.Id">@attr.Name</option>
+                            }
+                        </select>
+                        <br />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+                    <input type="hidden" name="id" value="@Model.Id" />
+                    <input type="hidden" asp-for="@Model.ModifiedByUser" value="@User.Identity.Name" />
+                    <button type="submit" id="confirmUpdate" class="btn btn-success">Update</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- This is the deleteModal to delete a subcategory: -->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="text-align:center;">
+                <h5 class="mx-auto"></h5>
+            </div>
+            <div class="modal-body">
+                <div style="text-align:center;">
+                    <form asp-controller="SubCategory" asp-action="Delete" method="post">
+                        <input type="hidden" name="id" value="@Model.Id" />
+                        <button type="submit" id="confirmDeleteItem" class="btn btn-danger">Delete</button>
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

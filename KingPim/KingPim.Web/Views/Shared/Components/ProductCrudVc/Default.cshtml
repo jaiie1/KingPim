@@ -1,0 +1,126 @@
+﻿@model ProductViewModel
+
+<!-- This is the createModal to create a product: -->
+<div class="modal fade" id="createModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title mx-auto text-center" id="createModalLabel"><strong>CREATE</strong></h5>
+            </div>
+            <form asp-controller="Product" asp-action="Add" method="post">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <p>
+                            <label asp-for="@Model.Name" hidden></label>
+                            <input type="text" asp-for="@Model.Name" placeholder="Name..." class="form-control form-control-sm" />
+                        </p>
+                    </div>
+                    <div class="form-group">
+                        <p>
+                            <label asp-for="@Model.Description" hidden></label>
+                            <input type="text" asp-for="@Model.Description" placeholder="Description..." class="form-control form-control-sm" />
+                        </p>
+                    </div>
+                    <div class="form-group">
+                        <p>
+                            <label asp-for="@Model.Price" hidden></label>
+                            <input type="text" asp-for="@Model.Price" placeholder="Price (SEK)..." class="form-control form-control-sm" />
+                        </p>
+                    </div>
+                    <div class="form-group">
+                        <select asp-for="SubCategoryId" class="form-control" required>
+                            <option value="" selected>Select a subcategory</option>
+                            @foreach (var cat in Model.SubCategories)
+                            {
+                                <option value="@cat.Id">@cat.Name</option>
+                            }
+                        </select>
+                        <br />
+                    </div>
+                    <p class="text-center"><strong>Make sure to save your changes.</strong></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+                    <input type="hidden" name="productId" value="@Model.Id" />
+                    <input type="hidden" asp-for="@Model.ModifiedByUser" value="@User.Identity.Name" />
+                    <button type="submit" id="createSomething" class="btn btn-success">Create</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- This is the updateModal to update a product: -->
+<div class="modal fade" id="editProductModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="mx-4">Edit @ViewBag.Title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form asp-controller="Product" asp-action="Update" id="editProductForm" method="post" class="form-horizontal">
+                    <input asp-for="Id" id="inputId" type="hidden" />
+                    <div class="form-group">
+                        <label asp-for="Name" class="control-label px-4"><strong>Name:</strong></label>
+                        <div class="px-4">
+                            <input asp-for="Name" id="inputName" class="form-control" required />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Price" class="control-label px-4"><strong>Price:</strong></label>
+                        <div class="px-4">
+                            <input asp-for="Price" id="inputPrice" class="form-control" required />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="SubCategoryId" class="control-label px-4"><strong>Subcategory:</strong></label>
+                        <div class="px-4">
+                            <select asp-for="SubCategoryId" class="form-control" required>
+                                <option value="" selected>Please choose...</option>
+                                @foreach (var subcat in Model.SubCategories)
+                                {
+                                    <option value="@subcat.Id">@subcat.Name</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Description" class="control-label px-4"><strong>Description:</strong></label>
+                        <div class="px-4">
+                            <textarea asp-for="Description" class="form-control" form="editProductForm"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="px-4">
+                            <button class="btn btn-sm btn-success" type="submit">Edit</button>
+                            <button class="btn btn-sm btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- This is the deleteModal to delete a product: -->
+<div class="modal fade" id="deleteProductModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="text-align:center;">
+                <h5 class="mx-auto"></h5>
+            </div>
+            <div class="modal-body">
+                <div style="text-align:center;">
+                    <form asp-controller="Product" asp-action="Delete" method="post">
+                        <input type="hidden" name="id" value="@Model.Id" />
+                        <button type="submit" id="confirmDeleteItem" class="btn btn-danger">Delete</button>
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

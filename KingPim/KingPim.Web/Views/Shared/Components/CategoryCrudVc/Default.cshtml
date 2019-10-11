@@ -1,0 +1,78 @@
+﻿@model CategoryViewModel
+
+<!-- This is the createModal to create a category: -->
+<div class="modal fade" id="createModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title mx-auto text-center" id="createModalLabel"><strong>CREATE</strong></h5>
+            </div>
+            <form asp-controller="Category" asp-action="Add" method="post">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <p>
+                            <label asp-for="@Model.Name"><strong></strong></label>
+                            <input asp-for="@Model.Name" placeholder="Name..." class="form-control form-control-sm" />
+                        </p>
+                    </div>
+                    <p class="text-center"><strong>Press "Create" to add the new Category.</strong></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-warning" data-dismiss="modal">Cancel</button>
+                    <input type="hidden" name="categoryId" value="@Model.Id" />
+                    <input type="hidden" asp-for="@Model.ModifiedByUser" value="@User.Identity.Name" />
+                    <button type="submit" id="createSomething" class="btn btn-success">Create</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- This is the updateModal to update a category: -->
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">                
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form asp-controller="Category" asp-action="Update" id="editCatForm" method="post" class="form-horizontal">
+                    <div class="form-group">
+                        <label for="Name" class="control-label px-4"><strong>Name:</strong></label>
+                        <div class="px-4">
+                            <input name="Name" id="nameInputField" class="form-control" required />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="px-4">
+                            <button class="btn btn-sm btn-success" type="submit">Edit</button>
+                            <button class="btn btn-sm btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- This is the deleteModal to delete a category: -->
+<div class="modal fade" id="deleteProductModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="text-align:center;">
+                <h5 class="mx-auto"></h5>
+            </div>
+            <div class="modal-body">
+                <div style="text-align:center;">
+                    <form asp-controller="Category" asp-action="Delete" method="post">
+                        <input type="hidden" name="id" value="@Model" />
+                        <button type="submit" id="confirmDeleteItem" class="btn btn-danger">Delete</button>
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

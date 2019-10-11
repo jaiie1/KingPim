@@ -1,0 +1,98 @@
+﻿@model SubCategoryViewModel
+
+
+<div class="container">     
+    <div class="float-sm-right" style="margin-left:5px; margin-top:23px;">
+        <button type="button" class="btn btn-outline-success btn-sm" name="createSomething" id="createSomething" data-toggle="modal" data-target="#createModal" data-name="@Model.SubCategories">Create</button>
+        <a asp-controller="SubCategory" asp-action="GetAllSubCategoriesToJson" class="btn btn-info btn-outline-info btn-sm" asp-route-id="@Model.Id">Export list Json</a>
+        @*<a asp-controller="SubCategory" asp-action="GetAllSubCategoriesToXml" class="btn btn-info btn-md" asp-route-id="@Model.Id">Export XML</a>*@
+    </div>
+
+        <h1>@ViewBag.EntityType</h1>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Name:</th>
+                    <th scope="col">Added Date:</th>
+                    <th scope="col">Updated Date:</th>
+                    <th scope="col">Version:</th>
+                    <th scope="col">Modified By:</th>
+                    @*<th scope="col">Export XML:</th>*@
+                    <th scope="col">Export JSON:</th>
+                    @if (User.IsInRole("Administrator") || User.IsInRole("Publisher"))
+                    {
+                        <th scope="col">Published:</th>
+                    }
+                    <th scope="col">Delete:</th>
+                    <th scope="col">Update:</th>
+                </tr>
+            </thead>
+            @foreach (var subCat in Model.SubCategories)
+            {
+                <tbody>
+                    <tr value="subCat.Id">
+                        <td><p><i>@subCat.Name</i></p></td>
+                        <td><p><i>@subCat.AddedDate.ToString("yyyy-MM-dd")</i></p></td>
+                        <td><p><i>@subCat.UpdatedDate.ToString("yyyy-MM-dd")</i></p></td>
+                        <td>@subCat.Version<span>.0</span></td>
+                        <td><p><i>@subCat.ModifiedByUser</i></p></td>
+                        @*<td><a asp-controller="SubCategory" asp-action="GetAllSubCategoriesToXml" class="btn btn-info btn-sm" asp-route-id="@subCat.Id">Export XML</a></td>*@
+                        <td><a asp-controller="SubCategory" asp-action="GetAllSubCategoriesToJson" class="btn btn-outline-info btn-sm" asp-route-id="@subCat.Id">Export Json</a></td>
+                        <td>
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                                <form asp-controller="SubCategory" asp-action="Publish">
+                                    <input value="@subCat.Id" name="id" style="display:none;" />
+                                    @if (subCat.Published == true)
+
+                                    {
+                                        <button type="submit" class="btn btn-sm btn-warning" style="float:right;">publish</button>
+
+                                    }
+                                    @if (subCat.Published == false)
+                                    {
+
+                                        <button type="submit" class="btn btn-sm btn-outline-warning" style="float:right;">unpublish</button>
+                                    }
+
+                                </form>
+                            }
+                        </td>
+
+                        <td>
+                            <button type="button"
+                                    class="btn btn-outline-danger btn-sm"
+                                    data-toggle="modal"
+                                    data-target="#deleteModal"
+                                    title="Delete"
+                                    id="deleteItem"
+                                    data-id="@subCat.Id"
+                                    data-name="@subCat.Name">
+                                Delete
+                            </button>
+                        </td>
+
+                        <td>
+                            <button type="button"
+                                    class="btn btn-outline-warning btn-sm"
+                                    name="updateSomething" 
+                                    id="updateSomething" 
+                                    data-toggle="modal" 
+                                    data-target="#updateModal"
+                                    data-id="@subCat.Id"
+                                    data-name="@subCat.Name">
+                                Update
+                            </button>
+                        </td>
+                        
+                    </tr>
+                </tbody>
+            }
+        </table>
+    </div>
+
+    <script>
+    var entityType = '@ViewBag.EntityType';
+    </script>
+
+    @await Component.InvokeAsync("SubCategoryCrudVc", Model)

@@ -1,0 +1,119 @@
+﻿@model OneAttributeViewModel
+
+<!-- This is the createModal to create an OneAttribute: -->
+<div class="modal fade" id="createModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title mx-auto text-center" id="createModalLabel"><strong>CREATE</strong></h5>
+            </div>
+            <form asp-controller="Attribute" asp-action="Add" method="post">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label asp-for="@Model.Name" hidden></label>
+                        <input type="text" asp-for="@Model.Name" placeholder="Name..." class="form-control form-control-sm" />
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="@Model.Description" hidden></label>
+                        <input type="text" asp-for="@Model.Description" placeholder="Description..." class="form-control form-control-sm" />
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="@Model.Type" hidden></label>
+                        <select asp-for="@Model.Type" class="form-control">
+                            <option value="" selected disabled>Select a type</option>
+                            <option value="string">Text</option>
+                            <option value="int">Number</option>
+                            <option value="bool">Yes/No</option>
+                            <option value="predefined">Predefined list</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="@Model.AttributeGroupId" hidden></label>
+                        <select asp-for="@Model.AttributeGroupId" class="form-control" required>
+                            <option value="" selected>Select an OneAttribute group</option>
+                            @foreach (var attrGr in Model.AttributeGroups)
+                            {
+                                <option value="@attrGr.Id">@attrGr.Name</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+                <p class="text-center"><strong>Make sure to save your changes.</strong></p>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+                    <input type="hidden" name="OneAttributeId" value="@Model.Id" />
+                    <button type="submit" id="createSomething" class="btn btn-success">Create</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- This is the updateModal to update an OneAttribute: -->
+<div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="updateModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title mx-auto text-center" id="updateModalLabel"><strong>UPDATE</strong></h5>
+            </div>
+            <form asp-controller="Attribute" asp-action="Update" method="post">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label asp-for="@Model.Name" hidden></label>
+                        <input type="text" asp-for="@Model.Name" placeholder="Name..." class="form-control form-control-sm" />
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="@Model.Description" hidden></label>
+                        <input type="text" asp-for="@Model.Description" placeholder="Description..." class="form-control form-control-sm" />
+                    </div>
+                    <div class="form-group">
+                        <div class="form-group">
+                            <select class="form-control" name="Types">
+                                <option value="" selected disabled>Select a type</option>
+                                <option value="string">Text</option>
+                                <option value="int">Number</option>
+                                <option value="bool">Yes/No</option>
+                                <option value="predefined">Predefined list</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <select asp-for="AttributeGroupId" class="form-control" required>
+                            <option value="" selected>Select an Attribute group</option>
+                            @foreach (var attrGr in Model.AttributeGroups)
+                            {
+                                <option value="@attrGr.Id">@attrGr.Name</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+                <p class="text-center"><strong>Make sure to save your changes.</strong></p>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    <input type="hidden" name="OneAttributeId" value="@Model.Id" />
+                    <button type="submit" id="updateSomething" class="btn btn-success">Update</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- This is the deleteModal to delete an OneAttribute: -->
+<div class="modal fade" id="deleteProductAttrModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="text-align:center;">
+                <h5 class="mx-auto"></h5>
+            </div>
+            <div class="modal-body">
+                <div style="text-align:center;">
+                    <form asp-controller="Attribute" asp-action="Delete" method="post">
+                        <input type="hidden" name="id" value="@Model.Id" />
+                        <button type="submit" id="confirmDeleteItem" class="btn btn-danger">Delete</button>
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

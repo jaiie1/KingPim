@@ -1,0 +1,17 @@
+[
+  {
+    "outputFileName": "wwwroot/lib/site.min.js",
+    "inputFiles": [
+      "wwwroot/lib/bootstrap/dist/js/bootstrap.min.js",
+      "wwwroot/lib/jquery/jquery.min.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/lib/kingpimbundle.js",
+    "inputFiles": [
+      "wwwroot/lib/bootstrap/dist/js/crudoperations.js",
+      "wwwroot/lib/bootstrap/dist/js/forgottenPassword.js",
+      "wwwroot/lib/bootstrap/dist/css/publishButton.js"
+    ]
+  }
+]

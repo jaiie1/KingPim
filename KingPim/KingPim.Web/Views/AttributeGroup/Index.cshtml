@@ -1,0 +1,62 @@
+﻿@model AttributeGroupViewModel
+
+
+
+
+<div class="container">
+    <div class="float-sm-right" style="margin-left:5px; margin-top:23px;">
+        <button type="button" class="btn btn-outline-success btn-sm" name="createSomething" id="createSomething" data-toggle="modal" data-target="#createModal" data-name="@Model.OneAttributes">Add new</button>
+    </div>    
+    <h1>AttributeGroup</h1>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Name:</th>
+                <th scope="col">Description:</th>
+                <th scope="col">Added Date:</th>
+                <th scope="col">Updated Date:</th>
+                <th scope="col">Delete:</th>
+                <th scope="col">Update:</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var attGr in Model.AttributeGroups)
+            {
+                <tr value="attGr.Id">
+                    <td><p><i>@attGr.Name</i></p></td>
+                    <td><p><i>@attGr.Description</i></p></td>
+                    <td>@attGr.AddedDate.ToString("yyyy-MM-dd")</td>
+                    <td>@attGr.UpdatedDate.ToString("yyyy-MM-dd")</td>
+
+                    <td>
+                        <button type="button" class="btn btn-outline-danger btn-sm"
+                                name="deleteSomething" id="deleteSomething"
+                                data-toggle="modal" data-target="#deleteAttrGroupModal"
+                                title="Delete"
+                                data-id="@attGr.Id"
+                                data-name="@attGr.Name">
+                            Delete
+                        </button>
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-outline-warning btn-sm"
+                                name="updateSomething"
+                                id="editItem"
+                                data-toggle="modal"
+                                data-target="#editAttrGroupModal"
+                                data-id="@attGr.Id"
+                                data-name="@attGr.Name"
+                                data-textarea="@attGr.Description">
+                            Update
+                        </button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+
+    </table>
+</div>
+
+@await Component.InvokeAsync("AttributeGroupCrudVc", Model)
+

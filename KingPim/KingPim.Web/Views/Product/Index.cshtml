@@ -1,0 +1,99 @@
+﻿@model ProductViewModel
+
+<!-- EXPORT-buttons: -->
+<div class="container">
+    <div class="float-sm-right" style="margin-left:5px; margin-top:23px;">
+        @*<a asp-controller="Product" asp-action="GetAllProductsToXml" class="btn btn-info btn-md" asp-route-id="@Model.Id">Export XML</a>*@
+        <a asp-controller="Product" asp-action="GetAllProductsToJson" class="btn btn-outline-info btn-sm" asp-route-id="@Model.Id">Export list Json</a>
+        <button type="button" class="btn btn-outline-success btn-sm" name="createSomething" id="createSomething" data-toggle="modal" data-target="#createModal" data-name="@Model.SubCategories">Create</button>
+    </div>
+
+    <h1>@ViewBag.EntityType</h1>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Name:</th>
+                <th scope="col">Description:</th>
+                <th scope="col">Price:</th>
+                <th scope="col">Version:</th>
+                <th scope="col">Modified By:</th>
+                @*<th scope="col">Export XML:</th>*@
+                <th scope="col">Export JSON:</th>
+                @if (User.IsInRole("Administrator") || User.IsInRole("Publisher"))
+                {
+                    <th scope="col">Published:</th>
+                }
+                <th><a>Details:</a></th>
+                <th scope="col">Delete:</th>
+                <th scope="col">Update:</th>
+            </tr>
+        </thead>
+        @foreach (var prod in Model.Products)
+        {
+            <tbody>
+                <tr value="@prod.Id">
+                    <td><p><i>@prod.Name</i></p></td>
+                    <td><p><i>@prod.Description</i></p></td>
+                    <td><p><i>@prod.Price:-</i></p></td>
+                    <td>@prod.Version<span>.0</span></td>
+                    <td><p><i>@prod.ModifiedByUser</i></p></td>
+                    @*<td><a asp-controller="Product" asp-action="GetAllProductsToXml" class="btn btn-info btn-sm" asp-route-id="@prod.Id">Export XML</a></td>*@
+                    <td><a asp-controller="Product" asp-action="GetAllProductsToJson" class="btn btn-outline-info btn-sm" asp-route-id="@prod.Id">Export Json</a></td>
+                    <td>
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            @if (User.IsInRole("Administrator") || User.IsInRole("Publisher"))
+                            {
+                                <form asp-controller="Product" asp-action="Publish">
+                                    <input value="@prod.Id" name="id" style="display:none;" />
+                                    @if (prod.Published == true)
+
+                                    {
+                                        <button type="submit" class="btn btn-sm btn-warning" style="float:right;">publish</button>
+
+                                    }
+                                    @if (prod.Published == false)
+                                    {
+
+                                        <button type="submit" class="btn btn-sm btn-outline-warning" style="float:right;">unpublish</button>
+                                    }
+                                </form>
+                            }
+                        }
+                    </td>
+                    <td><a asp-controller="Product" asp-action="Details" asp-route-id="@prod.Id" style="color:Highlight"><strong>Details</strong></a></td>
+
+                    <td><button type="button"
+                                class="btn btn-outline-danger btn-sm"
+                                id="deleteItem"
+                                data-toggle="modal"
+                                data-id="@prod.Id"
+                                data-name="@prod.Name"
+                                data-target="#deleteProductModal">
+                                Delete</button></td>
+
+                    <td><button
+                                type="button"
+                                class="btn btn-outline-warning btn-sm"
+                                data-toggle="modal"
+                                data-target="#editProductModal"
+                                title="Edit"
+                                id="editItem"
+                                data-id="@prod.Id"
+                                data-name="@prod.Name"
+                                data-price="@prod.Price"
+                                data-textarea="@prod.Description"
+                                data-select="@prod.SubCategory.Name">
+                                Update</button></td>
+                </tr>
+            </tbody>
+        }
+    </table>
+</div>
+
+<script>
+    var entityType = '@ViewBag.EntityType';
+</script>
+
+@await Component.InvokeAsync("ProductCrudVc", Model)
+@await Component.InvokeAsync("ProductDetailsVc", Model)

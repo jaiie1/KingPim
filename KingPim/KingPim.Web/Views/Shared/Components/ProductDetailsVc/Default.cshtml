@@ -1,0 +1,36 @@
+﻿@model ProductDetailsViewModel
+
+<!-- This is the detailsModal to edit details that a product has: -->
+<div class="modal fade" id="detailsModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title mx-auto text-center" id="detailsModalLabel"><strong></strong></h5>
+            </div>
+            <div class="modal-body">
+                <i id="description"></i>
+                <br />
+                <i id="subCategory"></i>
+                <br />
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">AttributeGroup:</th>
+                            <th scope="col">Attribute:</th>
+                            <th scope="col">Value:</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>                           
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+                @*<input type="hidden" name="??" value="@Model.Id" />*@
+                <button type="submit" id="createSomethingBtn" class="btn btn-success">Save</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,95 @@
+﻿@model CategoryViewModel           
+
+
+<div class="container">
+    @*<div class="float-sm-left" style="margin-bottom:10px; margin-top:80px;">
+        <a asp-controller="Category" asp-action="GetAllCategoriesToXml" class="btn btn-info btn-md">Export XML</a>
+        <a asp-controller="Category" asp-action="GetAllCategoriesToJson" class="btn btn-info btn-md">Export Json</a>
+    </div>*@  
+    <div class="float-sm-right" style="margin-left:5px; margin-top:23px;">
+        <button type="button" class="btn btn-outline-success btn-sm" name="createSomething" id="createSomething" data-toggle="modal" data-target="#createModal" data-name="@Model.Categories">Create</button>              
+    </div>
+    <h1>@ViewBag.EntityType</h1>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Name:</th>
+                <th scope="col">Added Date:</th>
+                <th scope="col">Updated Date:</th>
+                <th scope="col">Version:</th>
+                <th scope="col">Modified By:</th>
+                @*<th scope="col">Export XML:</th>*@
+                <th scope="col">Export JSON:</th>
+                @if (User.IsInRole("Administrator") || User.IsInRole("Publisher"))
+                {
+                    <th scope="col">Published:</th>
+                }
+                <th scope="col">Delete:</th>
+                <th scope="col">Update:</th>
+            </tr>
+        </thead>
+        @foreach (var cat in Model.Categories)
+        {
+            <tbody>
+                <tr value="@cat.Id">
+                    <td><p><i>@cat.Name</i></p></td>
+                    <td><p><i>@cat.AddedDate.ToString("yyyy-MM-dd")</i></p></td>
+                    <td><p><i>@cat.UpdatedDate.ToString("yyyy-MM-dd")</i></p></td>
+                    <td>@cat.Version<span>.0</span></td>
+                    <td><p><i>@cat.ModifiedByUser</i></p></td>
+                    @*<td><a asp-controller="Category" asp-action="GetAllCategoriesToXml" class="btn btn-info btn-sm" asp-route-id="@cat.Id">Export XML</a></td>*@
+                    <td><a asp-controller="Category" asp-action="GetAllCategoriesToJson" class="btn btn-outline-info btn-sm" asp-route-id="@cat.Id">Export Json</a></td>
+
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <td>
+                            @if (User.IsInRole("Administrator") || User.IsInRole("Publisher"))
+                            {
+                                <form asp-controller="Category" asp-action="Publish">
+                                    <input value="@cat.Id" name="id" style="display:none;" />
+                                    @if (cat.Published == true)
+
+                                    {
+                                        <button type="submit" class="btn btn-sm btn-warning" style="float:right;">publish</button>
+
+                                    }
+                                    @if (cat.Published == false)
+                                    {
+
+                                        <button type="submit" class="btn btn-sm btn-outline-warning" style="float:right;">unpublish</button>
+                                    }
+
+                                </form>
+                            }
+                        </td>
+                    }
+                    <td><button type="button" 
+                                class="btn btn-outline-danger btn-sm" 
+                                name="delete" 
+                                id="deleteItem" 
+                                data-toggle="modal" 
+                                data-id="@cat.Id"
+                                data-name="@cat.Name"
+                                data-target="#deleteProductModal">Delete</button></td>
+
+                    <td><button type="button" 
+                                class="btn btn-outline-warning btn-sm" 
+                                data-toggle="modal"
+                                data-target="#editModal"
+                                title="Edit"
+                                id="editItem"
+                                data-id="@cat.Id"
+                                data-name="@cat.Name">                               
+                                Update</button></td>
+
+                </tr>
+            </tbody>
+        }
+    </table>
+</div>
+
+<script>
+    var entityType = '@ViewBag.EntityType';
+</script>
+
+@await Component.InvokeAsync("CategoryCrudVc", Model)

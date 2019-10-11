@@ -1,0 +1,27 @@
+﻿@model AccountViewModel
+
+<!-- This is the passwordModal to reset a password: -->
+<div class="modal fade" id="passwordModal" tabindex="-1" role="dialog" aria-labelledby="passwordModal" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title mx-auto text-center" id="passwordModalLabel"><strong>Forgot you password</strong></h5>
+            </div>
+            <div class="modal-body center">
+                <form asp-controller="Home" asp-action="ForgottenPassword" method="post">
+                    <div class="modal-body">
+                        <div class="form-group">
+                                <label asp-for="@Model.UserName"><strong></strong></label>
+                                <input asp-for="@Model.UserName" placeholder="Email Address" class="form-control form-control-sm" />
+                        </div>
+                        <p class="text-center"><strong>Press the "Reset Password"-button down below and follow the instructions in the mail.</strong></p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-success">Reset Password</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

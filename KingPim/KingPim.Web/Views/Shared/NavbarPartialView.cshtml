@@ -1,0 +1,54 @@
+﻿<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#">KingPim</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link active" asp-controller="Account" asp-action="Index" style="color:darkslategrey">
+
+                    Account <span class="sr-only">(current)</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" asp-controller="Category" asp-action="Index" style="color:darkslategrey;">
+
+                    Category
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" asp-controller="SubCategory" asp-action="Index" style="color:darkslategrey;">
+
+                    SubCategory
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" asp-controller="Product" asp-action="Index" style="color:darkslategrey;">
+
+                    Product
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" asp-controller="AttributeGroup" asp-action="Index" style="color:darkslategrey;">
+
+                    AttributeGroup
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" asp-controller="Attribute" asp-action="Index" style="color:darkslategrey;">
+
+                    Attribute
+                </a>
+            </li>
+
+        </ul>
+        @if (User.Identity.IsAuthenticated)
+        {
+            <form class="form-inline" asp-controller="Account" asp-action="Logout">
+                <button class="btn btn-outline-success my-2 my-sm-0" style="color:darkslategrey;" type="submit">Logout</button>
+            </form>
+
+        }
+    </div>    
+</nav>

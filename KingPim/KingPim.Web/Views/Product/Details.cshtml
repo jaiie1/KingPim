@@ -1,0 +1,145 @@
+﻿@model ProductViewModel
+
+<h1>@Model.Name</h1>
+<br />
+<p><strong>Description: </strong><i>@Model.Description</i></p>
+<p><strong>Added Date: </strong><i>@Model.AddedDate.ToString("yyyy-MM-dd")</i></p>
+<p><strong>Updated Date: </strong><i>@Model.UpdatedDate.ToString("yyyy-MM-dd")</i></p>
+
+<table class="table col-md-8">
+    <thead>
+        <tr>
+            <th scope="col">AttributeGroupViewModel:</th>
+            <th scope="col">Attribute:</th>
+            <th scope="col">Value:</th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var attrGr in Model.SubCategoryAttributeGroups)
+        {
+        <tr>
+            <td>@attrGr.AttributeGroup.Name</td>
+            @foreach (var attr in attrGr.AttributeGroup.OneAttributes)
+            {
+                var prodAttrRow = Model.ProductOneAttributeValues.FirstOrDefault(x => x.OneAttributeId == attr.Id);
+                var prodAttrValueRow = prodAttrRow?.Value;
+
+                var predefAttrListRow = Model.PredefinedAttrListOptions.FirstOrDefault(x => x.OneAttributeId == attr.Id);
+                var predefAttrListOptionsRow = predefAttrListRow?.Name;
+
+                <td>@attr.Name</td>
+
+                @if (attr.Type == "string" || attr.Type == "int")
+                           {
+                    <td>
+                        @if (prodAttrValueRow != null && prodAttrRow != null)
+                        {
+                            <form asp-controller="Product" asp-action="UpdateProductOneAttributeValue">
+                                <input type="hidden" value="@attr.Id" asp-for="OneAttributeId" />
+                                <input type="hidden" value="@Model.ProductId" asp-for="ProductId" />
+                                <input type="hidden" value="@prodAttrRow.Id" asp-for="Id" />
+                                <input asp-for="Value" type="text" class="form-control-sm" value="@prodAttrRow.Value" />
+                                <button class="btn btn-sm btn-success" type="submit" style="float:right;border-radius:50px;">Update</button>
+                            </form>
+                        }
+                        else
+                        {
+                            <form asp-controller="Product" asp-action="AddProductOneAttributeValue">
+                                <input type="hidden" value="@attr.Id" asp-for="OneAttributeId" />
+                                <input type="hidden" value="@Model.ProductId" asp-for="ProductId" />
+                                <input asp-for="Value" type="text" class="form-control-sm" />
+                                <button class="btn btn-sm btn-success" type="submit" style="float:right;border-radius:50px;">Add</button>
+                            </form>
+                        }
+                    </td>
+                }
+                @if (attr.Type == "bool")
+                {
+                    <td>
+                        @if (prodAttrValueRow != null && prodAttrRow != null)
+                        {
+                            <form asp-controller="Product" asp-action="UpdateProductOneAttributeValue">
+                                <input type="hidden" value="@attr.Id" asp-for="OneAttributeId" />
+                                <input type="hidden" value="@Model.ProductId" asp-for="ProductId" />
+                                <input type="hidden" value="@prodAttrRow.Id" asp-for="Id" />
+
+                                @if (prodAttrRow.Value == "true")
+                                {
+                                    <input asp-for="Value" type="checkbox" checked value="false" />
+                                }
+                                else
+                                {
+                                    <input asp-for="Value" type="checkbox" value="true" />
+                                }
+                                <button class="btn btn-sm btn-success" type="submit" style="float:right;border-radius:50px;">Update</button>
+                            </form>
+                        }
+                        else
+                        {
+                            <form asp-controller="Product" asp-action="AddProductOneAttributeValue">
+                                <input type="hidden" value="@attr.Id" asp-for="OneAttributeId" />
+                                <input type="hidden" value="@Model.ProductId" asp-for="ProductId" />
+                                <input asp-for="Value" type="checkbox" />
+                                <button class="btn btn-sm btn-success" type="submit" style="float:right;border-radius:50px;">Add</button>
+                            </form>
+                        }
+                    </td>
+                }
+                @if (attr.Type == "predefined")
+                {
+                    <td>
+                        @if (predefAttrListOptionsRow != null)
+                        {
+                        <form asp-controller="Product" asp-action="UpdateProductOneAttributeValue">
+                            <input type="hidden" value="@attr.Id" asp-for="OneAttributeId" />
+                            <input type="hidden" value="@Model.ProductId" asp-for="ProductId" />
+                            <input type="hidden" value="@prodAttrRow.Id" asp-for="Id" />
+                            <button class="btn btn-sm btn-success" type="submit" style="float:right;border-radius:50px;">Update</button>
+
+                            <select asp-for="Value" class="form-control-sm">
+                                <option value="" disabled selected>@prodAttrValueRow</option>
+
+                                @foreach (var option in Model.PredefinedAttrListOptions)
+                                {
+                                    <option value="@option.Name">@option.Name</option>
+                                }
+                            </select>
+                        </form>
+                            <br />
+
+                            <form asp-controller="Product" asp-action="CreateOptionToPredefinedList">
+                                <input type="hidden" value="@attr.Id" asp-for="OneAttributeId" />
+                                <input type="hidden" value="@Model.ProductId" asp-for="ProductId" />
+                                <input type="text" value="" asp-for="Name" />
+                                <button class="btn btn-sm btn-info" type="submit" style="float:right;border-radius:50px;">Add option</button>
+                            </form>
+                                }
+                                else
+                                {
+                                <select>
+                                    <option disabled selected>@attr.Name</option>
+                                </select>
+                            <td>
+                                <form asp-controller="Product" asp-action="AddOptionIfNotExists">
+                                    <input type="hidden" value="@attr.Id" asp-for="OneAttributeId" />
+                                    <input type="hidden" value="@Model.ProductId" asp-for="ProductId" />
+                                    <input type="hidden" value="@Model.PredefinedAttrListId" asp-for="PredefinedAttrListId" />
+
+                                    <!-- Add new option to list: -->
+                                    <input asp-for="Name" value="" type="text" class="form-control-sm" />
+                                    <button class="btn btn-sm btn-info" type="submit" style="float:right;border-radius:50px;">Add option</button>
+                                </form>
+                            </td>
+                        }
+                    </td>
+                }
+            }
+        </tr>
+        }
+    </tbody>
+</table>
+<div class="container-fluid">
+    <a asp-controller="Product" asp-action="Index" class="btn btn-sm btn-warning">Back</a>
+</div>
