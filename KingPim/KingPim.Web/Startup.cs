@@ -31,7 +31,7 @@ namespace KingPim.Web
                 options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
             });
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-            // Configuration for DB connection.
+          
             var conn = _configuration.GetConnectionString("KingPim");
             // Register all services here:
             services.AddDbContext<ApplicationDbContext>(options => options.UseLazyLoadingProxies().UseSqlServer(conn));
